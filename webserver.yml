@@ -1,0 +1,7 @@
+---
+- hosts: "{{ hosts }}"
+  roles:
+    - apache
+    - database
+    - haproxy
+
