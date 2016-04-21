@@ -10,25 +10,8 @@
     when: mysql_conf_tpl != 'change_me'
     notify: restart mysql 
         
-- name: Start and enable service
+- name: SQL service
     service: name=mysql state=started enabled=yes
         
-- name: SQL service
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-  service: name=httpd state=started enabled=yes
-
-- name: Add repo file
-    template: src=mariadb_centos.repo.j2 dest=/etc/yum.repos.d/mariadb.repo owner=root group=root mode=0644
-
-- name: Install dependencies APT
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-  apt: name={{ item }} state=present
-  with_items:
-      - MariaDB-server
-      - MariaDB-client
-
-- name: Start and enable service
-    service: name=mysql state=started enabled=yes
-
 - include: mysql_secure_installation.yml
     when: mysql_secure_installation and mysql_root_password is defined
